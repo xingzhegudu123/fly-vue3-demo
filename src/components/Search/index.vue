@@ -1,4 +1,5 @@
 <template>
+<div id="content">
   <div class="search_body">
     <div class="search_input">
       <div class="search_input_wrapper">
@@ -26,6 +27,7 @@
       </ul>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
@@ -48,12 +50,13 @@ export default {
     message(newVal) {
     //   var CancelToken = this.axios.CancelToken;
     //   var source = CancelToken.source();
+      var cityId = this.$store.state.city.id;
       var that = this;
       // 取消上一次请求
       this.cancelRequest();
 
       this.axios
-        .get("/api/searchList?cityId=10&kw=a" + newVal, {
+        .get("/api/searchList?cityId="+ cityId +"&kw=a" + newVal, {
           cancelToken: new this.axios.CancelToken(function(c) {
             that.source = c;
           })

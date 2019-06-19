@@ -1,4 +1,6 @@
 <template>
+<div id="content">
+  
   <div class="city_body">
     <!-- <div class="city_list">
       <div class="city_hot">
@@ -82,10 +84,13 @@
     </div>-->
 
     <div class="city_list">
+      <Loading v-if ="isLoading"/>
+      <Scroller v-else ref = "city_list">
+        <div>
       <div class="city_hot">
         <h2>热门城市</h2>
         <ul class="clearfix">
-          <li v-for="item in hotList" :key="item.id">{{item.nm}}</li>
+          <li v-for="item in hotList" :key="item.id" @tap ="handleToCity(item.nm,item.id)" >{{item.nm}}</li>
         </ul>
       </div>
 
@@ -93,14 +98,15 @@
         <div v-for="obj in cityList" :key="obj.index">
           <h2>{{obj.index}}</h2>
           <ul>
-            <li v-for="item in obj.list" :key="item.id">{{item.nm}}</li>
-            <li>鞍山</li>
-            <li>安庆</li>
-            <li>安阳</li>
+            <li v-for="itemList in obj.list" :key="itemList.id" @tap ="handleToCity(itemList.nm,itemList.id)" >{{itemList.nm}}</li>
+          
           </ul>
         </div>
       </div>
+      </div>
+        </Scroller>
     </div>
+   
     <!--  右边索引 -->
     <div class="city_index">
       <ul>
@@ -108,6 +114,8 @@
         
       </ul>
     </div>
+  </div>
+ 
   </div>
 </template>
 
@@ -117,20 +125,38 @@ export default {
   data() {
     return {
       cityList: [], // 分类城市
-      hotList: [] // 热门城市
+      hotList: [], // 热门城市
+      isLoading : true,
     };
   },
+ 
   mounted() {
-    this.axios.get("/api/cityList").then(res => {
-      var msg = res.data.msg;
+   
+   var cityList = window.localStorage.getItem('cityList');
+   var hotList = window.localStorage.getItem('hotList');
+  //  本地存储
+     if(cityList && hotList){
+          this.cityList = JSON.parse(cityList);
+          this.hotList = JSON.parse(hotList);
+          this.isLoading = false;
+     }else{
+       this.axios.get("/api/cityList").then(res => {
+       var msg = res.data.msg;
       if (msg === "ok") {
         var cities = res.data.data.cities;
         // [{ index: "A", list: [{ nm: "A城", id: 123 }] }];
         var { cityList, hotList } = this.formatCityList(cities);
         this.cityList = cityList;
         this.hotList = hotList;
+        this.isLoading = false;
+
+        window.localStorage.setItem('cityList',JSON.stringify(cityList)); // 本地存储   转为字符串
+        window.localStorage.setItem('hotList',JSON.stringify(hotList));
       }
     });
+  }
+
+    
   },
 
   methods: {
@@ -191,8 +217,18 @@ export default {
     },
     hanleToIndex(index){
       var h2 = this.$refs.city_sort.getElementsByTagName('h2'); // 首字母数组
-       this.$refs.city_sort.parentNode.scrollTop =  h2[index].offsetTop; 
+      //  this.$refs.city_sort.parentNode.scrollTop =  h2[index].offsetTop; 
+       this.$refs.city_list.toScrollTop(-h2[index].offsetTop);
         console.log(index);
+    },
+    // 切换城市
+    handleToCity(nm, id){
+      
+       this.$store.commit('city/CITY_INFO',{ nm,id });
+       this.$router.push('/movie/nowPlaying');
+
+        window.localStorage.setItem('nowNm',nm); // 本地存储   转为字符串
+        window.localStorage.setItem('nowId',id);
     }
   }
 };
@@ -204,7 +240,7 @@ export default {
   width: 100%;
   position: absolute;
   top: 0;
-  bottom: 0;
+  bottom: 0; 
 }
 .city_body .city_list {
   flex: 1;

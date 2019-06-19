@@ -1,155 +1,130 @@
 <template>
-  <div class="movie_body">
-    <ul>
-      <!-- <li>
-        <div class="pic_show">
-          <img src="/images/movie_1.jpg">
-        </div>
-        <div class="info_list">
-          <h2>无名之辈</h2>
-          <p>
-            观众评
-            <span class="grade">9.2</span>
-          </p>
-          <p>主演: 陈建斌,任素汐,潘斌龙</p>
-          <p>今天55家影院放映607场</p>
-        </div>
-        <div class="btn_mall">购票</div>
-      </li>
-      <li>
-        <div class="pic_show">
-          <img src="/images/movie_2.jpg">
-        </div>
-        <div class="info_list">
-          <h2>毒液：致命守护者</h2>
-          <p>
-            观众评
-            <span class="grade">9.3</span>
-          </p>
-          <p>主演: 汤姆·哈迪,米歇尔·威廉姆斯,里兹·阿迈德</p>
-          <p>今天56家影院放映443场</p>
-        </div>
-        <div class="btn_mall">购票</div>
-      </li>
-      <li>
-        <div class="pic_show">
-          <img src="/images/movie_1.jpg">
-        </div>
-        <div class="info_list">
-          <h2>无名之辈</h2>
-          <p>
-            观众评
-            <span class="grade">9.2</span>
-          </p>
-          <p>主演: 陈建斌,任素汐,潘斌龙</p>
-          <p>今天55家影院放映607场</p>
-        </div>
-        <div class="btn_mall">购票</div>
-      </li>
-      <li>
-        <div class="pic_show">
-          <img src="/images/movie_2.jpg">
-        </div>
-        <div class="info_list">
-          <h2>毒液：致命守护者</h2>
-          <p>
-            观众评
-            <span class="grade">9.3</span>
-          </p>
-          <p>主演: 汤姆·哈迪,米歇尔·威廉姆斯,里兹·阿迈德</p>
-          <p>今天56家影院放映443场</p>
-        </div>
-        <div class="btn_mall">购票</div>
-      </li>
-      <li>
-        <div class="pic_show">
-          <img src="/images/movie_1.jpg">
-        </div>
-        <div class="info_list">
-          <h2>无名之辈</h2>
-          <p>
-            观众评
-            <span class="grade">9.2</span>
-          </p>
-          <p>主演: 陈建斌,任素汐,潘斌龙</p>
-          <p>今天55家影院放映607场</p>
-        </div>
-        <div class="btn_mall">购票</div>
-      </li>
-      <li>
-        <div class="pic_show">
-          <img src="/images/movie_2.jpg">
-        </div>
-        <div class="info_list">
-          <h2>毒液：致命守护者</h2>
-          <p>
-            观众评
-            <span class="grade">9.3</span>
-          </p>
-          <p>主演: 汤姆·哈迪,米歇尔·威廉姆斯,里兹·阿迈德</p>
-          <p>今天56家影院放映443场</p>
-        </div>
-        <div class="btn_mall">购票</div>
-      </li>
-      <li>
-        <div class="pic_show">
-          <img src="/images/movie_1.jpg">
-        </div>
-        <div class="info_list">
-          <h2>无名之辈</h2>
-          <p>
-            观众评
-            <span class="grade">9.2</span>
-          </p>
-          <p>主演: 陈建斌,任素汐,潘斌龙</p>
-          <p>今天55家影院放映607场</p>
-        </div>
-        <div class="btn_mall">购票</div>
-      </li> -->
-      <li v-for ="item in movieList" :key="item.id">
-        <div class="pic_show">
-          <img :src="item.img | setWH('128.180')">
-        </div>
-        <div class="info_list">
-          <h2>{{item.nm}}    <img v-if="item.version" src="@/assets/maxs.png" alt=""  /> </h2>
-          <p>
-            <!-- {{观众评}} -->
-            <span class="grade">{{item.sc}}</span>
-          </p>
-          <p>主演: {{item.star}}</p>
-          <p>{{item.showInfo}}</p>
-        </div>
-        <div class="btn_mall">购票</div>
-      </li>
-    </ul>
+  <div id="content" ref="content_movie">
+    <Loading v-if="isLoading"/>
+    <Scroller v-else :handleToScroll="handleToScroll" :handleToTouchEnd="handleToTouchEnd">
+      <div class="movie_body">
+        <ul>
+          <li class="pullDown">{{ pullDownMsg }}</li>
+          <li v-for="item in movieList" :key="item.id">
+            <div class="pic_show" @tap="hanleToDetail">
+              <img :src="item.img | setWH('128.180')">
+            </div>
+            <div class="info_list">
+              <h2>
+                {{item.nm}}
+                <img v-if="item.version" src="@/assets/maxs.png" alt>
+              </h2>
+              <p>
+                <!-- {{观众评}} -->
+                <span class="grade">{{item.sc}}</span>
+              </p>
+              <p>主演: {{item.star}}</p>
+              <p>{{item.showInfo}}</p>
+            </div>
+            <div class="btn_mall">购票</div>
+          </li>
+        </ul>
+      </div>
+    </Scroller>
   </div>
 </template>
 
 <script>
+// import BScroll from 'better-scroll';
+
 export default {
-  name: 'NowPlaying',
-  data(){
-     return {
-       movieList : [],
-     }
+  name: "NowPlaying",
+  data() {
+    return {
+      movieList: [],
+      pullDownMsg: "",
+      isLoading: true,
+      prevCityId: -1 // 切换城市重新请求数据   其他切换不清求
+    };
   },
-   mounted() {
-    this.axios.get("/api/movieOnInfoList?cityId=10").then(res => {
+  //  用keep-live切换会触发该生命周期  如果是mounted则不会触发
+  activated() {
+    var cityId = this.$store.state.city.id;
+
+    if (this.prevCityId === cityId) {
+      return; // 退出该方法
+    }
+
+    this.isLoading = true;
+    console.log(123);
+    this.axios.get("/api/movieOnInfoList?cityId=" + cityId).then(res => {
       var msg = res.data.msg;
       if (msg === "ok") {
-       this.movieList = res.data.data.movieList;
-      
+        this.movieList = res.data.data.movieList;
+        this.isLoading = false;
+        this.prevCityId = cityId;
+        //  this.$nextTick(()=>{ // 等数据到了再渲染
+        //   var scroll =  new BScroll(this.$refs.content_movie,{
+        //      tap : true,
+        //      probeType : 1
+        //      });
+
+        //     scroll.on('scroll',(pos)=>{
+        //       console.log('scroll');
+        //       if( pos.y >30){
+        //           this.pullDownMsg = '正在更新中';
+        //       }
+
+        //     });
+
+        //      scroll.on('touchEnd',(pos)=>{
+        //        if( pos.y >30){
+        //            this.axios.get("/api/movieOnInfoList?cityId=11").then(res => {
+        //               var msg = res.data.msg;
+        //               if (msg === "ok") {
+        //                 this.pullDownMsg = '更新成功';
+        //                 setTimeout(() => {
+        //                     this.movieList = res.data.data.movieList;
+        //                       this.pullDownMsg = '';
+        //                 }, 1000);
+
+        //               }
+        //             });
+
+        //       }
+        //     })
+
+        //  })
       }
     });
   },
+  methods: {
+    hanleToDetail() {
+      console.log("hanleToDetail1");
+    },
+    handleToScroll(pos) {
+      if (pos.y > 30) {
+        this.pullDownMsg = "正在更新中";
+      }
+    },
+    handleToTouchEnd(pos) {
+      var cityId = this.$store.state.city.id;
+      if (pos.y > 30) {
+        this.axios.get("/api/movieOnInfoList?cityId=" + cityId).then(res => {
+          var msg = res.data.msg;
+          if (msg === "ok") {
+            this.pullDownMsg = "更新成功";
+            setTimeout(() => {
+              this.movieList = res.data.data.movieList;
+              this.pullDownMsg = "";
+            }, 1000);
+          }
+        });
+      }
+    }
+  }
 };
 </script>
 
 <style scoped>
-
 #content .movie_body {
-  /* flex: 1;
-  overflow: auto; */
+  flex: 1;
+  overflow: auto;
 }
 .movie_body ul {
   margin: 0 12px;
@@ -216,5 +191,11 @@ export default {
 }
 .movie_body .btn_pre {
   background-color: #3c9fe6;
+}
+
+.movie_body .pullDown {
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 </style>

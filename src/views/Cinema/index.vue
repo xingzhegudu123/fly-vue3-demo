@@ -17,11 +17,11 @@
       </div>
     </div>
 
-    <div id="content">
+   
       <keep-alive>
         <router-view/>
       </keep-alive>
-    </div>
+    
 
     <TabBar/>
   </div>
@@ -40,14 +40,7 @@ export default {
 </script>
 
 <style scoped>
-#content {
-  height: auto;
-  bottom: 50px;
-  position: absolute;
-  top: 100px;
-  left: 0;
-  width: 100%;
-}
+
 .cinema_menu {
   width: 100%;
   height: 45px;

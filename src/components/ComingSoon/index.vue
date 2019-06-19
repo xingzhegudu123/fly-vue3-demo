@@ -1,4 +1,7 @@
 <template>
+<div id="content">
+	<Loading v-if = "isLoading" />
+	<Scroller v-else>
     <div class="movie_body">
 				<ul>
 					<!-- <li>
@@ -99,6 +102,8 @@
 					</li>
 				</ul>
 			</div>
+	</Scroller>
+</div>
 </template>
 
 <script>
@@ -106,15 +111,27 @@ export default {
    name : 'ComingSoon',
    data(){
      return {
-       comingList : [],
+	   comingList : [],
+	   isLoading : true,
+	   prevCityId : -1, 
      }
   },
-   mounted() {
-    this.axios.get("/api/movieComingList?cityId=10").then(res => {
+   activated() {
+
+	    var cityId = this.$store.state.city.id;
+      
+      if( this.prevCityId===cityId ){
+          return ;  // 退出该方法
+      }
+
+	this.isLoading = true;
+	 console.log('即将上映');
+    this.axios.get("/api/movieComingList?cityId="+cityId).then(res => {
       var msg = res.data.msg;
       if (msg === "ok") {
        this.comingList = res.data.data.comingList;
-      
+	   this.isLoading = false;
+	    this.prevCityId = cityId;
       }
     });
   },

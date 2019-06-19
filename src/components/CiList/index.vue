@@ -1,4 +1,7 @@
 <template>
+ <div id="content">
+	 <Loading v-if="isLoading" />
+	 <Scroller v-else>
     <div class="cinema_body">
 				<ul>
 					<!-- <li>
@@ -87,23 +90,36 @@
 					</li>
 				</ul>
 			</div>
+			</Scroller>
+			</div>
 </template>
-/
+
 <script>
 // {{ key | formatCard }}
 export default {
    name : 'CiList',
    data(){
      return {
-       cinemaList : [],
+	   cinemaList : [],
+	   isLoading : true,
+	   prevCityId : -1, 
      }
   },
-   mounted() {
-    this.axios.get("/api/cinemaList?cityId=10").then(res => {
+   activated() {
+      var cityId = this.$store.state.city.id;
+      
+      if( this.prevCityId===cityId ){
+          return ;  // 普通切换不请求数据(城市除外)
+      }
+
+	this.isLoading = true;
+
+    this.axios.get("/api/cinemaList?cityId="+ cityId).then(res => {
       var msg = res.data.msg;
       if (msg === "ok") {
        this.cinemaList = res.data.data.cinemas;
-      
+	   this.isLoading = false;
+	   this.prevCityId = cityId;
       }
     });
   },
@@ -144,6 +160,14 @@ export default {
 </script>
 
 <style scoped>
+#content {
+  height: auto;
+  bottom: 50px;
+  position: absolute;
+  top: 100px;
+  left: 0;
+  width: 100%;
+}
 #content .cinema_body{ flex:1; overflow:auto;}
 .cinema_body ul{ padding:20px;}
 .cinema_body li{  border-bottom:1px solid #e6e6e6; margin-bottom: 20px;}
