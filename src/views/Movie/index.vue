@@ -1,40 +1,56 @@
 <template>
   <div id="main">
-    <Header title="喵喵电影"/>
+    <div class="content_list_show" v-if="isshowDom">
+      <Header title="喵喵电影"/>
 
-    <div class="movie_menu">
-      <router-link tag="div" to="/movie/city" class="city_name">
-        <span>{{ $store.state.city.cityName }}</span>
-        <i class="iconfont icon-lower-triangle"></i>
-      </router-link>
-      <div class="hot_swtich">
-        <router-link tag="div" to="/movie/nowPlaying" class="hot_item">正在热映</router-link>
-        <router-link tag="div" to="/movie/comingSoon" class="hot_item">即将上映</router-link>
+      <div class="movie_menu">
+        <router-link tag="div" to="/movie/city" class="city_name">
+          <span>{{ $store.state.city.cityName }}</span>
+          <i class="iconfont icon-lower-triangle"></i>
+        </router-link>
+        <div class="hot_swtich">
+          <router-link tag="div" to="/movie/nowPlaying" class="hot_item">正在热映</router-link>
+          <router-link tag="div" to="/movie/comingSoon" class="hot_item">即将上映</router-link>
+        </div>
+        <router-link tag="div" to="/movie/search" class="search_entry">
+          <i class="iconfont icon-sousuo"></i>
+        </router-link>
       </div>
-      <router-link tag="div" to="/movie/search" class="search_entry">
-        <i class="iconfont icon-sousuo"></i>
-      </router-link>
+
+      <keep-alive>
+        <router-view/>
+      </keep-alive>
+      <TabBar/>
     </div>
 
-    <keep-alive>
-      <router-view/>
-    </keep-alive>
+    <router-view name="detail"/>
   </div>
 </template>
 
 <script>
 import Header from "@/components/Header";
 import TabBar from "@/components/TabBar";
-
 import { messageBox } from "@/components/JS";
+
+// import Header from "@/components/Header";
+
 export default {
   name: "Movie",
   components: {
     Header,
     TabBar
   },
+  data() {
+    return {
+      isshowDom: true
+    };
+  },
 
   mounted() {
+    // this.bus.$on('isshow',data=>{
+    //   console.log(data);
+    //      this.isshowDom = data;
+    // });
     setTimeout(() => {
       this.axios.get("/api/getLocation").then(res => {
         var msg = res.data.msg;
@@ -44,8 +60,8 @@ export default {
           var nm = res.data.data.nm;
           var id = res.data.data.id;
 
-          if(this.$store.state.city.id == id){
-                return ;   // 如果已经是当前城市则不弹窗
+          if (this.$store.state.city.id == id) {
+            return; // 如果已经是当前城市则不弹窗
           }
           messageBox({
             title: "定位",
@@ -55,7 +71,7 @@ export default {
             handleCannel() {},
             handleOk() {
               // 切换城市
-              window.localStorage.setItem("nowNm", nm); 
+              window.localStorage.setItem("nowNm", nm);
               window.localStorage.setItem("nowId", id);
               window.location.reload();
             }

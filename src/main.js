@@ -18,6 +18,16 @@ Vue.component('Loading',Loading);
 
 Vue.config.productionTip = false
 
+
+
+var bus = new Vue();
+Vue.prototype.bus = bus;
+
+
+
+
+
+
 new Vue({
   router,
   store,
