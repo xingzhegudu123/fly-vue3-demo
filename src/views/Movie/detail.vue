@@ -29,7 +29,7 @@
         <ul class="swiper-wrapper">
           <li v-for="(item,index) in detailMovie.photos" :key="index" class="swiper-slide">
             <div>
-              <img :src="item | setWH('140.127')" alt>
+              <img :src="item | setWH('140.127')" alt="">
             </div>
             
           </li>
@@ -41,6 +41,7 @@
 
 <script>
 import Header from "@/components/Header";
+//  详情页
 export default {
   name: "Detail",
   props: ["movieId"],
