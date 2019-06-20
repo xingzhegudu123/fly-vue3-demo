@@ -141,9 +141,11 @@ export default {
 .movie_body .pic_show {
   width: 64px;
   height: 90px;
+
 }
 .movie_body .pic_show img {
   width: 100%;
+   
 }
 .movie_body .info_list {
   margin-left: 10px;
