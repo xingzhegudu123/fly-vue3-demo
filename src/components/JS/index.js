@@ -2,18 +2,24 @@ import Vue from 'vue';
 import MessageBox from './MessageBox';
 //  封装一个弹窗组件
 export var messageBox = (function () {
-    var defaults = { // 默认值
-        title: '',
-        content: '',
-        cancel: '',
-        ok: '',
-        handleCannel: null,
-        handleOk: null,
-    };
-
-    var MyComponents = Vue.extend(MessageBox);
+    
 
     return function (opts) { // 配置参数
+
+        var defaults = { // 默认值
+            title: '',
+            content: '',
+            cancel: '',
+            ok: '',
+            handleCannel: null,
+            handleOk: null,
+        };
+    
+        var MyComponents = Vue.extend(MessageBox);
+
+
+
+
         for (var attr in opts) {
             defaults[attr] = opts[attr];
         }

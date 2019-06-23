@@ -21,7 +21,6 @@ export default {
       },
       {
          path : 'detail/1/:movieId',
-         
          components: {
             default :  () => import('@/components/NowPlaying'),
             detail : () => import('@/views/Movie/detail'),

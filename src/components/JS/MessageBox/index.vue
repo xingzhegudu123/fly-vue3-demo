@@ -3,8 +3,8 @@
        <h2>{{ title }}</h2>
        <p>{{ content }}</p>
        <div>
-           <div @touchstart = "handleCannel">{{ cancel }}</div>
-           <div @touchstart = "handleOk">{{ ok }}</div>
+           <div   v-if="cancel"  @touchstart = "handleCannel">{{ cancel }}</div>
+           <div   v-if="ok"      @touchstart = "handleOk">{{ ok }}</div>
        </div>
       
    </div>
@@ -14,8 +14,6 @@
 <script>
 export default {
     name : 'MessageBox',
-
-
 }
 </script>
 
