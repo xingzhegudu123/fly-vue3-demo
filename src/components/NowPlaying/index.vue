@@ -97,6 +97,7 @@ export default {
     hanleToDetail(movieId) {
   //  this.bus.$emit('isshow',false); // 列表页dom结构隐藏
      this.$router.push('/movie/detail/1/'+movieId);
+     console.log('sssssee');
     },
     handleToScroll(pos) {
       if (pos.y > 30) {

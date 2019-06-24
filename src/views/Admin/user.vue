@@ -1,10 +1,19 @@
 <template>
     <div>
         <el-table
-    :data="tableData"
+    :data="nowTableData"
     border
     style="width: 100%">
     <el-table-column
+      prop="userHead"
+      label="用户头像">
+       <template slot-scope="scope">
+             <img  class="userhead" :src="scope.row.userHead"   />  
+            <!-- {{scope.row.userHead}} -->
+            </template>
+    </el-table-column>
+
+     <el-table-column
       prop="date"
       label="注册日期">
     </el-table-column>
@@ -25,6 +34,14 @@
          </template>
     </el-table-column>
   </el-table>
+
+  <el-pagination class="page"
+  background
+  layout="prev, pager, next"
+  :current-page.sync = "currentPage"
+  :page-size= "pageSize"
+  :total="tableData.length">
+</el-pagination>
     </div>
 </template>
 
@@ -34,6 +51,9 @@ export default {
     data(){
         return {
             tableData: [],
+            currentPage: 1,
+            pageSize : 5
+
         }
     },
     mounted(){
@@ -44,6 +64,12 @@ export default {
             }
             
         });
+    },
+    computed : {
+       nowTableData(){
+        //    每页显示的数量
+           return this.tableData.slice( ( this.currentPage -1 )*this.pageSize, ( this.currentPage )*this.pageSize )|| [];
+       }
     },
     methods:{
         handleToFreeze(index, row){
@@ -95,6 +121,14 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.page{
+    margin-top: 20px;
+}
+.userhead{
+    width: 50px;
+    height:50px;
+    border-radius:50%;
+    overflow: hidden;
+}
 </style>
