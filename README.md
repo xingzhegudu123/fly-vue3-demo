@@ -19,7 +19,6 @@ yarn run test
 yarn run lint
 ### 运行效果
 ![image](https://github.com/xingzhegudu123/fly-vue3-demo/blob/dev/run_effect/1530.png)
-![image](https://github.com/xingzhegudu123/fly-vue3-demo/blob/dev/run_effect/557.png)
 ![image](https://github.com/xingzhegudu123/fly-vue3-demo/blob/dev/run_effect/756.png)
 ![image](https://github.com/xingzhegudu123/fly-vue3-demo/blob/dev/run_effect/415.png)
 ![image](https://github.com/xingzhegudu123/fly-vue3-demo/blob/dev/run_effect/315.png)
