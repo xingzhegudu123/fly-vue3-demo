@@ -2,7 +2,7 @@
   <div id="content">
     <div class="login_body">
       <div>
-        <input  v-model="username"  class="login_text" type="text" placeholder="账户名/手机号/Email">
+        <input  v-model="username"  class="login_text" type="text" placeholder="账户名">
       </div>
       <div>
         <input  v-model="password"  class="login_text" type="password" placeholder="请输入您的密码">

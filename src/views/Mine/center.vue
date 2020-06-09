@@ -26,9 +26,9 @@ export default {
     // TabBar
   },
   methods : {
+    // 退出
      handleToLogout(){
-      
-        this.axios.get('/api2/users/logout').then(res=>{  // 退出
+        this.axios.get('/api2/users/logout').then(res=>{  
            var status = res.data.status;
            if(status===0){
               localStorage.removeItem('name');

@@ -41,7 +41,7 @@ export default {
        }
    },
    methods:{
-       handleToRegister(){
+       handleToRegister(){  // 注册
            console.log(this.verify);
            this.axios.post('/api2/users/register',{
                 email : this.email,
@@ -69,7 +69,7 @@ export default {
                  }
            })
        },
-       handleToVerify(){
+       handleToVerify(){ // 发送验证码
            if(this.disabled){return;}
            this.axios.get('/api2/users/verify?email='+this.email).then((res)=>{
                  var status =res.data.status;

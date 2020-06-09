@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div id="content" ref="content_movie">
     <Loading v-if="isLoading"/>
     <Scroller v-else :handleToScroll="handleToScroll" :handleToTouchEnd="handleToTouchEnd">
