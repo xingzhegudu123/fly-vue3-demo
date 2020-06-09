@@ -5,7 +5,9 @@
 - 搜索页面: watch监听绑定的输入框值,发起数据请求.
 - 后台管理: express搭建服务器, 只有在app端管理员角色才能进入后台,登录后进入个人中心，利用组内路由守卫beforeRouteEnter先调接口获取用户信息保存localStorage和vuex中
 
-## Project setup
+## 运行后台
+先git clone喵喵电影后台---cnpm install安装node_moudules---连接数据库 cd到mongod的bin目录下： mongod --dbpath= 'db'数据库配置文件存放的路径--npm start启动
+## 运行app端
 yarn install
 ### Compiles and hot-reloads for development
 yarn run serve
@@ -16,10 +18,12 @@ yarn run test
 ### Lints and fixes files
 yarn run lint
 ### 运行效果
-![image](https://github.com/xingzhegudu123/fly-vue3-demo/blob/feature-dev-1.0/public/imgReadme/accunt.png)
-![image](https://github.com/xingzhegudu123/vue-cli3-Ts/blob/feature-dev-1.0/public/imgReadme/table.png)
-![image](https://github.com/xingzhegudu123/vue-cli3-Ts/blob/feature-dev-1.0/public/imgReadme/vue3+ts.png)
-
+![image](https://github.com/xingzhegudu123/fly-vue3-demo/blob/dev/run_effect/1530.png)
+![image](https://github.com/xingzhegudu123/fly-vue3-demo/blob/dev/run_effect/557.png)
+![image](https://github.com/xingzhegudu123/fly-vue3-demo/blob/dev/run_effect/756.png)
+![image](https://github.com/xingzhegudu123/fly-vue3-demo/blob/dev/run_effect/415.png)
+![image](https://github.com/xingzhegudu123/fly-vue3-demo/blob/dev/run_effect/315.png)
+![image](https://github.com/xingzhegudu123/fly-vue3-demo/blob/dev/run_effect/5018.png)
 ```
 
 
